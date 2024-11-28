@@ -2,7 +2,7 @@
 import { GalleryWrapper } from "@/components/project/gallery-wrapper";
 import { useAppConfigContext } from "@/context/app-config";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { FiTv } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { TProjectProps } from "@/context/app-config/type";
@@ -25,7 +25,7 @@ const ProjectPage = () => {
       config.projects?.find((project) => {
         return project.id === projectId;
       }),
-    [projectId],
+    [config.projects]
   );
 
   // console.log(targetProject);
@@ -45,7 +45,7 @@ const ProjectPage = () => {
     return () => {
       window.removeEventListener("beforeunload", customBackButton);
     };
-  }, []);
+  }, [targetProject?.customRoute]);
 
   // useLayoutEffect(() => {
   //     if (backgroundRef.current) {
@@ -168,7 +168,7 @@ const ProjectPage = () => {
             {targetProject?.images?.map((image, index) => {
               return (
                 // <img key={`bg-image-${index}`} className="object-contain w-full" src={image} />
-                <div className="w-full h-96 relative">
+                <div className="w-full h-96 relative" key={`project-image-${index}`}>
                   <Image
                     key={`bg-image-${index}`}
                     src={image}

@@ -1,22 +1,17 @@
 "use client";
-import { OrbitControls, useScroll } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import {
   useRef,
   useEffect,
   useState,
   RefObject,
-  useTransition,
   useLayoutEffect,
   forwardRef,
   useImperativeHandle,
 } from "react";
 import {
-  DirectionalLight,
-  PointLight,
   DoubleSide,
-  Mesh,
-  Group,
   Vector3,
 } from "three";
 import {
@@ -56,14 +51,13 @@ declare module "@react-three/fiber" {
 // }
 
 export const CanvasRenderer = forwardRef(
-  (
+  function CanvasRenderer(
     props: {
       canvasRef: RefObject<HTMLCanvasElement>;
     },
     ref,
-  ) => {
-    const [pending, startTransition] = useTransition();
-    const { gl, scene, camera } = useThree();
+  ) {
+    const { camera } = useThree();
 
     // useEffect(() => {
     //   if  (gl && scene && camera) {
@@ -71,22 +65,22 @@ export const CanvasRenderer = forwardRef(
     //   }
     // }, [gl, scene, camera])
 
-    const introRef = useRef<Group>(null);
-    const [intensity, setIntensity] = useState(0);
+    // const introRef = useRef<Group>(null);
+    // const [intensity, setIntensity] = useState(0);
 
-    const lightRef = useRef<DirectionalLight>(null);
+    // const lightRef = useRef<DirectionalLight>(null);
     // useHelper(lightRef, DirectionalLightHelper);
 
-    const pointLightRef = useRef<PointLight>(null);
+    // const pointLightRef = useRef<PointLight>(null);
     // useHelper(pointLightRef, PointLightHelper);
 
-    const textRef = useRef<Mesh>(null);
+    // const textRef = useRef<Mesh>(null);
 
     // useFrame(({ gl, scene, camera }) => {
     //   // composer.current.render();
     // }, 1);
 
-    const data = useScroll();
+    // const data = useScroll();
 
     // useEffect(() => {
     // window.addEventListener("scroll", () => {

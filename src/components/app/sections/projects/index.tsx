@@ -26,8 +26,6 @@ const ProjectWrapper = (props: { data: TProjectProps }) => {
     thumbnail,
     techStack,
     title,
-    github,
-    images,
     id,
     type,
     platform,
@@ -136,7 +134,7 @@ const NonfeaturedProject = (props: {
     }>
   >;
 }) => {
-  const { title, desc, techStack, thumbnail, github, type, area } =
+  const { title, techStack, type, area } =
     props.project;
 
   return (
