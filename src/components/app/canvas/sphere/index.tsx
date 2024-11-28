@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { useRef, useEffect, RefObject, useState } from "react";
+import { useRef, useEffect, RefObject, useState, useCallback } from "react";
 import { Group, Mesh, PointLight } from "three";
 import { FontLoader, TextGeometry } from "three/examples/jsm/Addons.js";
 import fontJson from "three/examples/fonts/helvetiker_regular.typeface.json";
@@ -110,7 +110,7 @@ export const SymbolSphere = (props: {
     };
   });
 
-  useFrame((state, delta) => {
+  useFrame(useCallback((state, delta) => {
     if (sphereRef && sphereRef.current && floatingAnimation) {
       sphereRef.current.rotation.x += 0.005;
       sphereRef.current.rotation.y += 0.005;
@@ -122,7 +122,7 @@ export const SymbolSphere = (props: {
       // setTime(prev => prev + 0.02);
       timeVar += 0.02;
     }
-  });
+  }, [sphereRef]));
 
   const setPosition = () => {
     if (sphereRef && sphereRef.current && props.canvasRef) {

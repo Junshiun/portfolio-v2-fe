@@ -1,20 +1,15 @@
 "use client";
-import { motion } from "framer-motion";
+import { useTimerContext } from "@/context/timer";
 import { FaAngleDoubleDown } from "react-icons/fa";
+import { twMerge } from "tailwind-merge";
 
 export const DownArrow = (props: { navigateTo: string }) => {
+
+  const timerContext = useTimerContext();
+
   return (
-    <motion.div
-      className="absolute bottom-[20%] left-0 right-0 m-auto w-fit animate-bounce cursor-pointer p-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 100 }}
-      transition={{
-        ease: "easeInOut",
-        opacity: {
-          delay: 5,
-        },
-        duration: 2,
-      }}
+    <div
+      className={twMerge("absolute bottom-[20%] left-0 right-0 m-auto w-fit animate-bounce cursor-pointer p-4 opacity-0 transition-opacity duration-[2s]", timerContext?.timerCompleted && "!opacity-100")}
       onClick={() => {
         const element = document.getElementById(props.navigateTo);
         if (element) {
@@ -23,6 +18,6 @@ export const DownArrow = (props: { navigateTo: string }) => {
       }}
     >
       <FaAngleDoubleDown size={"1.5rem"} />
-    </motion.div>
+    </div>
   );
 };

@@ -1,28 +1,23 @@
 import { GrPowerReset } from "react-icons/gr";
 import { TCanvasRenderer } from "../type";
 import { RefObject } from "react";
-import { motion } from "framer-motion";
+import { twMerge } from "tailwind-merge";
+import { useTimerContext } from "@/context/timer";
 
 export const ResetButton = (props: {
   canvasRendererRef: RefObject<TCanvasRenderer>;
 }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        ease: "easeInOut",
-        opacity: {
-          delay: 5,
-        },
-        duration: 2,
-      }}
-      className="absolute top-4 right-4 cursor-pointer bg-black rounded-full p-2"
-      onClick={() => {
-        props.canvasRendererRef.current?.resetCamera();
-      }}
-    >
-      <GrPowerReset size={"1rem"} />
-    </motion.div>
-  );
+
+    const timerContext = useTimerContext();
+
+    return (
+        <div
+        className={twMerge("absolute top-4 right-4 cursor-pointer bg-black rounded-full p-2 opacity-0 transition-opacity duration-[2s]", timerContext?.timerCompleted && "!opacity-100")}
+        onClick={() => {
+            props.canvasRendererRef.current?.resetCamera();
+        }}
+        >
+        <GrPowerReset size={"1rem"} />
+        </div>
+    );
 };

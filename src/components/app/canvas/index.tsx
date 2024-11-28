@@ -33,6 +33,7 @@ import { TCanvasRenderer } from "./type";
 import { ResetButton } from "./resetButton";
 import { LoadingComponent } from "@/components/loading";
 import { FaCube } from "react-icons/fa6";
+import { useTimerContext } from "@/context/timer";
 
 extend({ TextGeometry });
 
@@ -279,6 +280,8 @@ export const CanvasRenderer = forwardRef(
 export const CanvasScreen = () => {
   const [loading, setLoading] = useState(true);
 
+  const timerContext = useTimerContext();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRendererRef = useRef<TCanvasRenderer>(null);
 
@@ -304,7 +307,10 @@ export const CanvasScreen = () => {
         camera={{ position: [-5, 8, 6], fov: 75 }}
         gl={{ preserveDrawingBuffer: true }}
         shadows
-        onCreated={() => setLoading(false)}
+        onCreated={() => {
+          timerContext?.startTimer();
+          setLoading(false)
+        }}
       >
         <CanvasRenderer canvasRef={canvasRef} ref={canvasRendererRef} />
         <OrbitControls

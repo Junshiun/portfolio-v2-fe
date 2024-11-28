@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Tween, Group, Easing } from "@tweenjs/tween.js";
 import { PointLight } from "three";
+import { useTimerContext } from "@/context/timer";
 // import * as THREE from 'three';
 
 export const CustomPointLight = () => {
@@ -8,34 +9,59 @@ export const CustomPointLight = () => {
 
   const lightRef = useRef<PointLight>(null);
 
+  const timerContext = useTimerContext();
+
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      const startIntensity = { intensity: 0.0 };
-      const targetIntensity = { intensity: 0.1 };
-      const duration = 1000; // 2 seconds
 
-      new Tween(startIntensity, tweenGroup)
-        .to(targetIntensity, duration)
-        .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
-        .onUpdate(() => {
-          if (lightRef.current) {
-            lightRef.current.intensity = startIntensity.intensity;
-          }
-        })
-        .start();
-
-      function animate(time: number) {
+    function animate(time: number) {
         requestAnimationFrame(animate);
         tweenGroup.update(time);
-      }
+    }
 
-      requestAnimationFrame(animate);
-    }, 5000);
+    if (timerContext?.timerCompleted) {
+        const startIntensity = { intensity: 0.0 };
+        const targetIntensity = { intensity: 0.1 };
+        const duration = 1000; // 2 seconds
 
-    return () => {
-      clearTimeout(timeout);
-    };
-  });
+        new Tween(startIntensity, tweenGroup)
+            .to(targetIntensity, duration)
+            .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
+            .onUpdate(() => {
+            if (lightRef.current) {
+                lightRef.current.intensity = startIntensity.intensity;
+            }
+            })
+            .start();
+
+        requestAnimationFrame(animate);
+    }
+    // const timeout = setTimeout(() => {
+    //   const startIntensity = { intensity: 0.0 };
+    //   const targetIntensity = { intensity: 0.1 };
+    //   const duration = 1000; // 2 seconds
+
+    //   new Tween(startIntensity, tweenGroup)
+    //     .to(targetIntensity, duration)
+    //     .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
+    //     .onUpdate(() => {
+    //       if (lightRef.current) {
+    //         lightRef.current.intensity = startIntensity.intensity;
+    //       }
+    //     })
+    //     .start();
+
+    //   function animate(time: number) {
+    //     requestAnimationFrame(animate);
+    //     tweenGroup.update(time);
+    //   }
+
+    //   requestAnimationFrame(animate);
+    // }, 5000);
+
+    // return () => {
+    //   clearTimeout(timeout);
+    // };
+  }, [timerContext?.timerCompleted]);
 
   return (
     <pointLight

@@ -62,7 +62,7 @@ export const TranslateXContainer = (props: {
             props.iterableComponent[highlightGetter.index]
           ) : (
             <div
-              className="//w-fit grid grid-flow-col auto-cols-[100%] gap-4 transition-transform duration-500 h-full will-change-transform"
+              className="//w-fit grid grid-flow-col auto-cols-[100%] gap-4 transition-transform duration-1000 ease-out h-full will-change-transform"
               style={{
                 transform: `translateX(calc(-${highlightGetter.index * 100}% - ${highlightGetter.index * 1}rem))`,
               }}
