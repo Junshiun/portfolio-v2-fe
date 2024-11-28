@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Tween, Group, Easing } from "@tweenjs/tween.js";
 import { PointLight } from "three";
 import { useTimerContext } from "@/context/timer";
@@ -12,28 +12,27 @@ export const CustomPointLight = () => {
   const timerContext = useTimerContext();
 
   useEffect(() => {
-
     function animate(time: number) {
-        requestAnimationFrame(animate);
-        tweenGroup.update(time);
+      requestAnimationFrame(animate);
+      tweenGroup.update(time);
     }
 
     if (timerContext?.timerCompleted) {
-        const startIntensity = { intensity: 0.0 };
-        const targetIntensity = { intensity: 0.1 };
-        const duration = 1000; // 2 seconds
+      const startIntensity = { intensity: 0.0 };
+      const targetIntensity = { intensity: 0.1 };
+      const duration = 1000; // 2 seconds
 
-        new Tween(startIntensity, tweenGroup)
-            .to(targetIntensity, duration)
-            .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
-            .onUpdate(() => {
-            if (lightRef.current) {
-                lightRef.current.intensity = startIntensity.intensity;
-            }
-            })
-            .start();
+      new Tween(startIntensity, tweenGroup)
+        .to(targetIntensity, duration)
+        .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
+        .onUpdate(() => {
+          if (lightRef.current) {
+            lightRef.current.intensity = startIntensity.intensity;
+          }
+        })
+        .start();
 
-        requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     }
     // const timeout = setTimeout(() => {
     //   const startIntensity = { intensity: 0.0 };

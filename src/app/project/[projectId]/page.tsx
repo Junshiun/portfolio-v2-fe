@@ -25,7 +25,7 @@ const ProjectPage = () => {
       config.projects?.find((project) => {
         return project.id === projectId;
       }),
-    [config.projects]
+    [projectId],
   );
 
   // console.log(targetProject);
@@ -168,7 +168,10 @@ const ProjectPage = () => {
             {targetProject?.images?.map((image, index) => {
               return (
                 // <img key={`bg-image-${index}`} className="object-contain w-full" src={image} />
-                <div className="w-full h-96 relative" key={`project-image-${index}`}>
+                <div
+                  className="w-full h-96 relative"
+                  key={`project-image-${index}`}
+                >
                   <Image
                     key={`bg-image-${index}`}
                     src={image}

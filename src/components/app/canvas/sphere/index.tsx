@@ -110,19 +110,24 @@ export const SymbolSphere = (props: {
     };
   });
 
-  useFrame(useCallback((state, delta) => {
-    if (sphereRef && sphereRef.current && floatingAnimation) {
-      sphereRef.current.rotation.x += 0.005;
-      sphereRef.current.rotation.y += 0.005;
-      sphereRef.current.rotation.z -= delta * 3;
+  useFrame(
+    useCallback(
+      (state, delta) => {
+        if (sphereRef && sphereRef.current && floatingAnimation) {
+          sphereRef.current.rotation.x += 0.005;
+          sphereRef.current.rotation.y += 0.005;
+          sphereRef.current.rotation.z -= delta * 3;
 
-      // const time = Date.now() * 0.001;
-      sphereRef.current.position.y = Math.cos(timeVar) * 2;
+          // const time = Date.now() * 0.001;
+          sphereRef.current.position.y = Math.cos(timeVar) * 2;
 
-      // setTime(prev => prev + 0.02);
-      timeVar += 0.02;
-    }
-  }, [sphereRef]));
+          // setTime(prev => prev + 0.02);
+          timeVar += 0.02;
+        }
+      },
+      [sphereRef],
+    ),
+  );
 
   const setPosition = () => {
     if (sphereRef && sphereRef.current && props.canvasRef) {

@@ -3,14 +3,6 @@
 // import { TextGeometry } from "three/examples/jsm/Addons.js";
 // import fontJson from '../fonts/Sci Fied X_Regular.json';
 // import { Object3DNode } from "@react-three/fiber";
-import { ExperienceSection } from "@/components/app/sections/experience";
-import { CanvasScreen } from "@/components/app/canvas";
-import { SkillsSection } from "@/components/app/sections/skills";
-import { ProjectSection } from "@/components/app/sections/projects";
-import { MessageSection } from "@/components/app/sections/message";
-import { AboutSection } from "@/components/app/sections/about";
-import { PortfolioInfo } from "@/components/portfolio-info";
-import { TopButton } from "@/components/app/top-button";
 import { MainPageComponents } from "@/components/app";
 
 // extend({ TextGeometry });

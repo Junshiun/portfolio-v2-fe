@@ -21,15 +21,7 @@ import { TitleIcon } from "@/components/title-icon";
 import Image from "next/image";
 
 const ProjectWrapper = (props: { data: TProjectProps }) => {
-  const {
-    desc,
-    thumbnail,
-    techStack,
-    title,
-    id,
-    type,
-    platform,
-  } = props.data;
+  const { desc, thumbnail, techStack, title, id, type, platform } = props.data;
 
   // const [imageRail, setImageRail] = useState(false);
 
@@ -134,8 +126,7 @@ const NonfeaturedProject = (props: {
     }>
   >;
 }) => {
-  const { title, techStack, type, area } =
-    props.project;
+  const { title, techStack, type, area } = props.project;
 
   return (
     <div

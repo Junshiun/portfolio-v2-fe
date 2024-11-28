@@ -10,10 +10,7 @@ import {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import {
-  DoubleSide,
-  Vector3,
-} from "three";
+import { DoubleSide, Vector3 } from "three";
 import {
   TextGeometry,
   // UnrealBloomPass,
@@ -51,188 +48,179 @@ declare module "@react-three/fiber" {
 //   }
 // }
 
-export const CanvasRenderer = forwardRef(
-  function CanvasRenderer(
-    props: {
-      canvasRef: RefObject<HTMLCanvasElement>;
-    },
-    ref,
-  ) {
-    const { camera } = useThree();
+export const CanvasRenderer = forwardRef(function CanvasRenderer(
+  props: {
+    canvasRef: RefObject<HTMLCanvasElement>;
+  },
+  ref,
+) {
+  const { camera } = useThree();
 
-    // useEffect(() => {
-    //   if  (gl && scene && camera) {
-    //     console.log("loaded");
-    //   }
-    // }, [gl, scene, camera])
+  // useEffect(() => {
+  //   if  (gl && scene && camera) {
+  //     console.log("loaded");
+  //   }
+  // }, [gl, scene, camera])
 
-    // const introRef = useRef<Group>(null);
-    // const [intensity, setIntensity] = useState(0);
+  // const introRef = useRef<Group>(null);
+  // const [intensity, setIntensity] = useState(0);
 
-    // const lightRef = useRef<DirectionalLight>(null);
-    // useHelper(lightRef, DirectionalLightHelper);
+  // const lightRef = useRef<DirectionalLight>(null);
+  // useHelper(lightRef, DirectionalLightHelper);
 
-    // const pointLightRef = useRef<PointLight>(null);
-    // useHelper(pointLightRef, PointLightHelper);
+  // const pointLightRef = useRef<PointLight>(null);
+  // useHelper(pointLightRef, PointLightHelper);
 
-    // const textRef = useRef<Mesh>(null);
+  // const textRef = useRef<Mesh>(null);
 
-    // useFrame(({ gl, scene, camera }) => {
-    //   // composer.current.render();
-    // }, 1);
+  // useFrame(({ gl, scene, camera }) => {
+  //   // composer.current.render();
+  // }, 1);
 
-    // const data = useScroll();
+  // const data = useScroll();
 
-    // useEffect(() => {
-    // window.addEventListener("scroll", () => {
-    //   console.log(data);
-    // });
-    // }, []);
+  // useEffect(() => {
+  // window.addEventListener("scroll", () => {
+  //   console.log(data);
+  // });
+  // }, []);
 
-    const tweenGroup = new TweenGroup();
+  const tweenGroup = new TweenGroup();
 
-    const animateCamera = (time: number) => {
-      requestAnimationFrame(animateCamera);
-      tweenGroup.update(time);
+  const animateCamera = (time: number) => {
+    requestAnimationFrame(animateCamera);
+    tweenGroup.update(time);
+  };
+
+  const animateTween = (
+    startPosition: Vector3,
+    targetPosition: Vector3,
+    duration: number,
+  ) => {
+    new Tween(startPosition, tweenGroup)
+      .to(targetPosition, duration)
+      .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
+      .onUpdate(() => {
+        camera.position.set(startPosition.x, startPosition.y, startPosition.z);
+      })
+      .start();
+  };
+
+  useEffect(() => {
+    animateTween(new Vector3(-5, 8, 6), new Vector3(1, 0, 4.5), 5000);
+
+    requestAnimationFrame(animateCamera);
+  }, [camera]);
+
+  useImperativeHandle(ref, () => {
+    return {
+      resetCamera: () => {
+        const currentPosition = camera.position.clone();
+
+        animateTween(currentPosition, new Vector3(1, 0, 4.5), 2000);
+
+        requestAnimationFrame(animateCamera);
+      },
     };
+  });
 
-    const animateTween = (
-      startPosition: Vector3,
-      targetPosition: Vector3,
-      duration: number,
-    ) => {
-      new Tween(startPosition, tweenGroup)
-        .to(targetPosition, duration)
-        .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
-        .onUpdate(() => {
-          camera.position.set(
-            startPosition.x,
-            startPosition.y,
-            startPosition.z,
-          );
-        })
-        .start();
-    };
+  useFrame(() => {
+    camera.updateProjectionMatrix();
+  });
 
-    useEffect(() => {
-      animateTween(new Vector3(-5, 8, 6), new Vector3(1, 0, 4.5), 5000);
+  // const [viewportDimension, setViewportDimension] = useState({
+  //   width: 0,
+  //   height: 0,
+  // });
+  // const deferredViewport = useDeferredValue(viewportDimension);
 
-      requestAnimationFrame(animateCamera);
-    }, [camera]);
+  // const calculateViewport = () => {
+  //   startTransition(() => {
+  //     const vFOV = ((camera as PerspectiveCamera).fov * Math.PI) / 180; // Convert vertical FOV to radians
+  //     const height = 2 * Math.tan(vFOV / 2) * camera.position.z; // Visible height
+  //     const width = height * (camera as PerspectiveCamera).aspect; // Visible width
+  //     // const { viewport } = useThree();
 
-    useImperativeHandle(ref, () => {
-      return {
-        resetCamera: () => {
-          const currentPosition = camera.position.clone();
+  //     setViewportDimension({
+  //       width,
+  //       height,
+  //     });
+  //   })
+  // };
 
-          animateTween(currentPosition, new Vector3(1, 0, 4.5), 2000);
+  // const handleScroll = () => {
+  //   const scrollPercent =
+  //       ((document.documentElement.scrollTop || document.body.scrollTop) /
+  //           ((document.documentElement.scrollHeight ||
+  //               document.body.scrollHeight) -
+  //               document.documentElement.clientHeight)) *
+  //       100;
 
-          requestAnimationFrame(animateCamera);
-        },
-      };
-    });
+  //   console.log(scrollPercent);
+  // }
 
-    useFrame(() => {
-      camera.updateProjectionMatrix();
-    });
+  // useLayoutEffect(() => {
+  //   window.addEventListener("resize", calculateViewport, false);
+  //   // window.addEventListener('scroll', handleScroll);
 
-    // const [viewportDimension, setViewportDimension] = useState({
-    //   width: 0,
-    //   height: 0,
-    // });
-    // const deferredViewport = useDeferredValue(viewportDimension);
+  //   calculateViewport();
 
-    // const calculateViewport = () => {
-    //   startTransition(() => {
-    //     const vFOV = ((camera as PerspectiveCamera).fov * Math.PI) / 180; // Convert vertical FOV to radians
-    //     const height = 2 * Math.tan(vFOV / 2) * camera.position.z; // Visible height
-    //     const width = height * (camera as PerspectiveCamera).aspect; // Visible width
-    //     // const { viewport } = useThree();
+  //   return () => window.removeEventListener("resize", calculateViewport, false);
+  // }, []);
 
-    //     setViewportDimension({
-    //       width,
-    //       height,
-    //     });
-    //   })
-    // };
+  // const font = new FontLoader().parse(fontJson);
 
-    // const handleScroll = () => {
-    //   const scrollPercent =
-    //       ((document.documentElement.scrollTop || document.body.scrollTop) /
-    //           ((document.documentElement.scrollHeight ||
-    //               document.body.scrollHeight) -
-    //               document.documentElement.clientHeight)) *
-    //       100;
-
-    //   console.log(scrollPercent);
-    // }
-
-    // useLayoutEffect(() => {
-    //   window.addEventListener("resize", calculateViewport, false);
-    //   // window.addEventListener('scroll', handleScroll);
-
-    //   calculateViewport();
-
-    //   return () => window.removeEventListener("resize", calculateViewport, false);
-    // }, []);
-
-    // const font = new FontLoader().parse(fontJson);
-
-    return (
-      <>
-        {/* <ambientLight intensity={0.1} color={"#FFFFFF"}/> */}
-        <spotLight
-          position={[0, 0, 6]}
-          color={"white"}
-          intensity={0.1}
-          castShadow
-        ></spotLight>
-        {/* <directionalLight position={[0, 5, 0]} ref={lightRef} target={textRef.current} color={"#FFFFFF"} intensity={0.05} castShadow shadow-mapSize-width={1024}
+  return (
+    <>
+      {/* <ambientLight intensity={0.1} color={"#FFFFFF"}/> */}
+      <spotLight
+        position={[0, 0, 6]}
+        color={"white"}
+        intensity={0.1}
+        castShadow
+      ></spotLight>
+      {/* <directionalLight position={[0, 5, 0]} ref={lightRef} target={textRef.current} color={"#FFFFFF"} intensity={0.05} castShadow shadow-mapSize-width={1024}
   shadow-mapSize-height={1024}
   shadow-camera-far={10}
   shadow-camera-left={-5}
   shadow-camera-right={5}
   shadow-camera-top={5}
   shadow-camera-bottom={-5}></directionalLight> */}
-        {/* <axesHelper args={[5]}/> */}
-        <SymbolSphere canvasRef={props.canvasRef} />
-        {/* <RoundedBox width={15} height={5} depth={10} radius={2} smoothness={2}/> */}
-        {/* <mesh>
+      {/* <axesHelper args={[5]}/> */}
+      <SymbolSphere canvasRef={props.canvasRef} />
+      {/* <RoundedBox width={15} height={5} depth={10} radius={2} smoothness={2}/> */}
+      {/* <mesh>
         <boxGeometry args={[10, 5, 10]}></boxGeometry>
         <meshStandardMaterial color={"lightblue"} side={Three.BackSide}></meshStandardMaterial>
       </mesh> */}
-        {/* <CurvedPlane /> */}
-        {/* <mesh rotation={[0, 0, 0]} position={[0, 0, -5]}>
+      {/* <CurvedPlane /> */}
+      {/* <mesh rotation={[0, 0, 0]} position={[0, 0, -5]}>
         <planeGeometry args={[viewportDimension.width * 3, viewportDimension.height * 1.5]}></planeGeometry>
         <meshStandardMaterial color={"grey"} side={DoubleSide}></meshStandardMaterial>
       </mesh> */}
-        <mesh
-          rotation={[Math.PI / 2, 0, 0]}
-          position={[0, -1, 0]}
-          receiveShadow
-        >
-          <planeGeometry
-            // args={[deferredViewport.width * 2, deferredViewport.height * 1.5]}
-            args={[15, 15]}
-          ></planeGeometry>
-          <meshStandardMaterial
-            color={"white"}
-            side={DoubleSide}
-          ></meshStandardMaterial>
-        </mesh>
-        {/* <hemisphereLight args={[0xddeeff, 0x0f0e0d, 0.02]}></hemisphereLight> */}
-        {/* <Track /> */}
-        {/* <Effects ref={composer}>
+      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
+        <planeGeometry
+          // args={[deferredViewport.width * 2, deferredViewport.height * 1.5]}
+          args={[15, 15]}
+        ></planeGeometry>
+        <meshStandardMaterial
+          color={"white"}
+          side={DoubleSide}
+        ></meshStandardMaterial>
+      </mesh>
+      {/* <hemisphereLight args={[0xddeeff, 0x0f0e0d, 0.02]}></hemisphereLight> */}
+      {/* <Track /> */}
+      {/* <Effects ref={composer}>
         <unrealBloomPass attach="passes" args={[new Vector2(window.innerWidth, window.innerHeight), 0, 0, 0]} />
       </Effects> */}
 
-        {/* <mesh position={[4, 1, 0]} geometry={roundedBoxGeometry}>
+      {/* <mesh position={[4, 1, 0]} geometry={roundedBoxGeometry}>
         <meshStandardMaterial color={"#FFFFFF"}></meshStandardMaterial>
         <Html transform>
           <Introduction />
         </Html>
       </mesh> */}
-        {/* <CanvasGroup sectionId="about" position={[-3, -0.5, 0]} rotation={[0, 0, 0]}>
+      {/* <CanvasGroup sectionId="about" position={[-3, -0.5, 0]} rotation={[0, 0, 0]}>
         <AboutGroup/>
       </CanvasGroup>
       <CanvasGroup sectionId="skills" position={[3, -0.8, -0.5]}>
@@ -244,38 +232,37 @@ export const CanvasRenderer = forwardRef(
       <CanvasGroup sectionId="projects" position={[-3, -0.8, -4]}>
         <ProjectsGroup/>
       </CanvasGroup> */}
-        <CanvasGroup
-          sectionId="about"
-          position={[-1.5, -0.5, -2.5]}
-          rotation={[0, 0.5, 0]}
-        >
-          <AboutGroup />
-        </CanvasGroup>
-        <CanvasGroup
-          sectionId="skills"
-          position={[2.8, -0.8, -0.8]}
-          rotation={[0, -1, 0]}
-        >
-          <SkillsGroup />
-        </CanvasGroup>
-        <CanvasGroup
-          sectionId="work-experience"
-          position={[0.8, -0.8, -2.5]}
-          rotation={[0, -0.2, 0]}
-        >
-          <ExperienceGroup />
-        </CanvasGroup>
-        <CanvasGroup
-          sectionId="projects"
-          position={[-3, -0.8, 0.4]}
-          rotation={[0, 1.1, 0]}
-        >
-          <ProjectsGroup />
-        </CanvasGroup>
-      </>
-    );
-  },
-);
+      <CanvasGroup
+        sectionId="about"
+        position={[-1.5, -0.5, -2.5]}
+        rotation={[0, 0.5, 0]}
+      >
+        <AboutGroup />
+      </CanvasGroup>
+      <CanvasGroup
+        sectionId="skills"
+        position={[2.8, -0.8, -0.8]}
+        rotation={[0, -1, 0]}
+      >
+        <SkillsGroup />
+      </CanvasGroup>
+      <CanvasGroup
+        sectionId="work-experience"
+        position={[0.8, -0.8, -2.5]}
+        rotation={[0, -0.2, 0]}
+      >
+        <ExperienceGroup />
+      </CanvasGroup>
+      <CanvasGroup
+        sectionId="projects"
+        position={[-3, -0.8, 0.4]}
+        rotation={[0, 1.1, 0]}
+      >
+        <ProjectsGroup />
+      </CanvasGroup>
+    </>
+  );
+});
 
 export const CanvasScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -309,7 +296,7 @@ export const CanvasScreen = () => {
         shadows
         onCreated={() => {
           timerContext?.startTimer();
-          setLoading(false)
+          setLoading(false);
         }}
       >
         <CanvasRenderer canvasRef={canvasRef} ref={canvasRendererRef} />
