@@ -48,13 +48,14 @@ const ProjectWrapper = (props: { data: TProjectProps }) => {
       )}
     >
       <div className="grid md:grid-cols-[3fr_5fr] md:grid-rows-[1fr_1rem] gap-4">
-        <div className="relative w-full h-40 overflow-hidden">
+        <div className="relative w-full h-40 overflow-hidden rounded-xl">
           <Image
             src={thumbnail}
             alt="project's thumbnail"
             fill={true}
             style={{ objectFit: "cover" }}
             quality={75}
+            sizes="100%"
           />
           {/* <img loading="lazy" className="w-full object-contain group-hover/card:![filter:brightness(1)] group-hover/list:[filter:brightness(0.5)] //transition-all //duration-150" src={thumbnail}/> */}
         </div>
@@ -74,16 +75,18 @@ const ProjectWrapper = (props: { data: TProjectProps }) => {
               );
             })}
           </div>
-          {desc.map((detail, index) => {
-            return (
-              <span
-                key={`project-desc-${index}`}
-                className="text-grey-01 text-justify"
-              >
-                {detail}
-              </span>
-            );
-          })}
+          <ul className="line-clamp-3">
+            {desc.map((detail, index) => {
+              return (
+                <li
+                  key={`project-desc-${index}`}
+                  className="text-grey-01 text-justify"
+                >
+                  {detail}
+                </li>
+              );
+            })}
+          </ul>
         </div>
         <div className="grow flex items-end gap-4">
           {/* {

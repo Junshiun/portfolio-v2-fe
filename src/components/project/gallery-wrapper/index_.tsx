@@ -37,22 +37,21 @@ export const GalleryWrapper = (props: { images: string[] }) => {
   });
 
   return (
-    <div className="h-fit grid overflow-hidden border-t-2 border-t-grey-02 pt-8 gap-4">
-    <h3 className="h-fit text-grey-01">Gallery</h3>
+    <div className="h-80 //min-h-80 md:!h-full md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-2 overflow-hidden div-with-bg-01">
       <TranslateXContainer
-        className=""
         swipeHandler={handlers}
         data={props.images}
         highlightState={{ highlight, setHighlight }}
         main={
-          <div className="h-fit p-8 [&_*]:text-grey-01 text-grey-01 //overflow-hidden div-with-bg-01 rounded-xl overflow-hidden">
+          <div className="//h-full p-4 justify-items-center grid gap-4 grid-rows-[4rem_1fr] [&_*]:text-grey-01 text-grey-01 //overflow-hidden">
+            <span className="h-full flex items-center">Gallery</span>
             {/* <div className="w-full h-full overflow-hidden"> */}
-            <div className="h-full w-full group grid [grid-template-areas:'a0_a0_a0_a1_a1_a1''a2_a2_a3_a3_a4_a4'] auto-rows-[10rem] gap-8">
-              {props.images.slice(0, 4).map((image, index) => {
+            <div className="max-h-full h-full w-full group grid grid-cols-[repeat(3,1fr)] grid-rows-[repeat(3,1fr)] //auto-rows-fr gap-4 //overflow-hidden">
+              {props.images.map((image, index) => {
                 return (
                   <div
                     key={`gallery-${index}`}
-                    className="//w-full h-full rounded-xl //overflow-hidden group-hover:[filter:brightness(0.2)] hover:![filter:brightness(1)] transition-all cursor-pointer"
+                    className="//w-full h-full rounded //overflow-hidden group-hover:[filter:brightness(0.2)] hover:![filter:brightness(1)] transition-all cursor-pointer"
                     onClick={() =>
                       setHighlight({
                         status: true,
@@ -63,7 +62,6 @@ export const GalleryWrapper = (props: { images: string[] }) => {
                       background: `url(${image})`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
-                      gridArea: `a${index}`
                     }}
                   >
                     {/* <img className="h-full object-fit group-hover:[filter:brightness(0.2)] hover:![filter:brightness(1)] transition-all cursor-pointer" src={image}></img> */}
@@ -71,16 +69,6 @@ export const GalleryWrapper = (props: { images: string[] }) => {
                   </div>
                 );
               })}
-              <h3 className="rounded-xl flex justify-center items-center w-full h-full bg-black [grid-area:a4] cursor-pointer" onClick={() => {
-                setHighlight({
-                    status: true,
-                    index: 4,
-                  })
-              }}>
-                + {
-                    props.images.length - 4
-                }
-              </h3>
             </div>
             {/* </div> */}
           </div>

@@ -27,7 +27,7 @@ export const SkillsGroup = () => {
             roughness={0}
           />
           <Html transform>
-            <div className="w-2 h-2">
+            <div className="w-2 h-2 relative">
               {/* <img src={"icons/icon-gear.png"} /> */}
               <Image
                 src="/icons/icon-gear.png"

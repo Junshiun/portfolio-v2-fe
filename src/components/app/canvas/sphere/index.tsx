@@ -125,7 +125,7 @@ export const SymbolSphere = (props: {
           timeVar += 0.02;
         }
       },
-      [sphereRef],
+      [sphereRef, floatingAnimation],
     ),
   );
 
@@ -144,7 +144,7 @@ export const SymbolSphere = (props: {
       const positionY =
         (scrollDirection === "up" ? 1 : sphereRef.current.position.y) -
         30 * (scrollTopVar / 100);
-      sphereRef.current.position.y = Math.max(positionY, -2.5);
+      sphereRef.current.position.y = Math.max(positionY, -3.0);
       sphereRef.current.position.z =
         ((props.canvasRef.current?.clientHeight || 0) / 2) *
         (scrollTopVar / 2000);
@@ -213,7 +213,7 @@ export const SymbolSphere = (props: {
   ];
 
   return (
-    <group position={[0, 0, 0]} scale={0.3}>
+    <group position={[0, 0, 0]} scale={0.25}>
       <group ref={sphereRef}>
         <mesh>
           <sphereGeometry args={[1, 8, 5]} />

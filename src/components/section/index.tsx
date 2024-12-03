@@ -5,7 +5,7 @@ export const SectionWrapper = (props: PropsWithChildren<TSectionProps>) => {
   return (
     <div
       id={props.id || ""}
-      className="[&:not(:last-child)]:mb-48 scroll-mt-20"
+      className={`[&:not(:last-child)]:mb-48 scroll-mt-20 ${props.className}`}
     >
       <h2 className="mb-4 rounded text-white-01">{props.title}</h2>
       {props.children}

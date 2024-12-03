@@ -4,7 +4,7 @@ import { FaAngleDoubleUp } from "react-icons/fa";
 export const TopButton = () => {
   return (
     <div
-      className="sticky bottom-4 self-end p-2 cursor-pointer rounded-full border-[0.01rem] border-grey-02"
+      className="sticky bottom-6 self-end p-2 cursor-pointer rounded-full border-[0.01rem] border-grey-02"
       onClick={() => {
         window.scrollTo({
           top: 0,

@@ -31,6 +31,8 @@ import { ResetButton } from "./resetButton";
 import { LoadingComponent } from "@/components/loading";
 import { FaCube } from "react-icons/fa6";
 import { useTimerContext } from "@/context/timer";
+import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
+import { MessageGroup } from "./groups/message";
 
 extend({ TextGeometry });
 
@@ -51,6 +53,7 @@ declare module "@react-three/fiber" {
 export const CanvasRenderer = forwardRef(function CanvasRenderer(
   props: {
     canvasRef: RefObject<HTMLCanvasElement>;
+    orbitControlRef: RefObject<OrbitControlsImpl>
   },
   ref,
 ) {
@@ -85,6 +88,8 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
   // });
   // }, []);
 
+  // const initialPosition = useRef(new Vector3());
+
   const tweenGroup = new TweenGroup();
 
   const animateCamera = (time: number) => {
@@ -100,14 +105,31 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
     new Tween(startPosition, tweenGroup)
       .to(targetPosition, duration)
       .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
+      .onStart(() => {
+        if (props.orbitControlRef.current) {
+          props.orbitControlRef.current.maxPolarAngle = Math.PI;
+          props.orbitControlRef.current?.reset();
+          // camera.position.copy(initialPosition.current);
+        }
+      })
       .onUpdate(() => {
         camera.position.set(startPosition.x, startPosition.y, startPosition.z);
+      })
+      .onComplete(() => {
+        if (props.orbitControlRef.current) {
+          props.orbitControlRef.current.maxPolarAngle = Math.PI/2;
+        }
       })
       .start();
   };
 
+  const target = new Vector3(2, 0, 4);
+
   useEffect(() => {
-    animateTween(new Vector3(-5, 8, 6), new Vector3(1, 0, 4.5), 5000);
+
+    // initialPosition.current.copy(camera.position);
+
+    animateTween(new Vector3(-5, 8, 6), target, 5000);
 
     requestAnimationFrame(animateCamera);
   }, [camera]);
@@ -117,7 +139,7 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
       resetCamera: () => {
         const currentPosition = camera.position.clone();
 
-        animateTween(currentPosition, new Vector3(1, 0, 4.5), 2000);
+        animateTween(currentPosition, target, 2000);
 
         requestAnimationFrame(animateCamera);
       },
@@ -172,6 +194,12 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
 
   return (
     <>
+      {/* <group onClick={() => console.log(camera.position)}>
+        <mesh>
+        <boxGeometry args={[1,1,1]}></boxGeometry>
+<meshStandardMaterial color={"white"}/>
+        </mesh>
+      </group> */}
       {/* <ambientLight intensity={0.1} color={"#FFFFFF"}/> */}
       <spotLight
         position={[0, 0, 6]}
@@ -234,15 +262,15 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
       </CanvasGroup> */}
       <CanvasGroup
         sectionId="about"
-        position={[-1.5, -0.5, -2.5]}
+        position={[-2, -0.5, -2.5]}
         rotation={[0, 0.5, 0]}
       >
         <AboutGroup />
       </CanvasGroup>
       <CanvasGroup
         sectionId="skills"
-        position={[2.8, -0.8, -0.8]}
-        rotation={[0, -1, 0]}
+        position={[3.0, -0.8, -1.5]}
+        rotation={[0, -0.9, 0]}
       >
         <SkillsGroup />
       </CanvasGroup>
@@ -255,10 +283,17 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
       </CanvasGroup>
       <CanvasGroup
         sectionId="projects"
-        position={[-3, -0.8, 0.4]}
-        rotation={[0, 1.1, 0]}
+        position={[-3.7, -0.8, 0.4]}
+        rotation={[0, 1.2, 0]}
       >
         <ProjectsGroup />
+      </CanvasGroup>
+      <CanvasGroup
+        sectionId="message"
+        position={[-4.5,-0.5,2]}
+        rotation={[0, 1.5, 0]}
+      >
+        <MessageGroup />
       </CanvasGroup>
     </>
   );
@@ -266,25 +301,26 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
 
 export const CanvasScreen = () => {
   const [loading, setLoading] = useState(true);
+  const orbitControlRef = useRef<OrbitControlsImpl>(null);
 
   const timerContext = useTimerContext();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRendererRef = useRef<TCanvasRenderer>(null);
 
-  useLayoutEffect(() => {
-    // console.log(canvasRef.current?.clientHeight);
+  // useLayoutEffect(() => {
+  //   // console.log(canvasRef.current?.clientHeight);
 
-    return () => {
-      if (canvasRef.current) {
-        // Dispose of the canvas and its resources
-        const gl = canvasRef.current.getContext("webgl");
-        if (gl) {
-          gl.getExtension("WEBGL_lose_context")?.loseContext();
-        }
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (canvasRef.current) {
+  //       // Dispose of the canvas and its resources
+  //       const gl = canvasRef.current.getContext("webgl");
+  //       if (gl) {
+  //         gl.getExtension("WEBGL_lose_context")?.loseContext();
+  //       }
+  //     }
+  //   };
+  // }, []);
 
   return (
     <div className="w-full h-screen bg-black relative">
@@ -299,9 +335,10 @@ export const CanvasScreen = () => {
           setLoading(false);
         }}
       >
-        <CanvasRenderer canvasRef={canvasRef} ref={canvasRendererRef} />
+        <CanvasRenderer canvasRef={canvasRef} ref={canvasRendererRef} orbitControlRef={orbitControlRef}/>
         <OrbitControls
-          enableZoom={false}
+          // enableZoom={false}
+          ref={orbitControlRef}
           maxPolarAngle={Math.PI / 2}
         ></OrbitControls>
         {/* <OrbitControls></OrbitControls> */}

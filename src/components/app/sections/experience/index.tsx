@@ -7,8 +7,6 @@ import Statics from "@/statics";
 export const ExperienceSection = () => {
   const data = useAppConfigContext();
 
-  console.log(data);
-
   return (
     <SectionWrapper title={"WORK EXPERIENCE"} id={Statics.experience}>
       <ul className="group/list relative before:absolute before:inset-0 before:w-full before:h-full">

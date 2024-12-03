@@ -1,3 +1,4 @@
+import { useAppConfigContext } from "@/context/app-config";
 import { SectionWrapper } from "../../../section";
 import { TSkillsCategoryProps } from "./type";
 
@@ -15,10 +16,26 @@ export const SkillsCategory = (props: TSkillsCategoryProps) => {
 };
 
 export const SkillsSection = () => {
+
+  const appConfig = useAppConfigContext();
+
+  const { skills } = appConfig;
+
   return (
     <SectionWrapper id="skills" title={"SKILLS"}>
       <div className="flex flex-col gap-8">
-        <SkillsCategory
+        {
+          Object.keys(skills || {}).map((category, index) => {
+            return (
+              <SkillsCategory
+                key={`skills-${index}`}
+                title={category}
+                skills={skills && skills[category] || []}
+              />
+            )
+          })
+        }
+        {/* <SkillsCategory
           title={"Programming Languages"}
           skills={["JavaScript", "TypeScript", "HTML", "CSS", "Dart"]}
         />
@@ -43,7 +60,7 @@ export const SkillsSection = () => {
             "Jest",
             "Google Analytics",
           ]}
-        />
+        /> */}
       </div>
     </SectionWrapper>
   );

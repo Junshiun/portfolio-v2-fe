@@ -19,7 +19,7 @@ export const CustomPointLight = () => {
 
     if (timerContext?.timerCompleted) {
       const startIntensity = { intensity: 0.0 };
-      const targetIntensity = { intensity: 0.1 };
+      const targetIntensity = { intensity: 0.11 };
       const duration = 1000; // 2 seconds
 
       new Tween(startIntensity, tweenGroup)

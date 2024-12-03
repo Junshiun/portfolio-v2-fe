@@ -27,7 +27,7 @@ export const ProjectsGroup = () => {
             roughness={0}
           />
           <Html transform>
-            <div className="w-2 h-2">
+            <div className="w-2 h-2 relative">
               {/* <img src={"icons/icon-project.png"} /> */}
               <Image
                 src="/icons/icon-project.png"

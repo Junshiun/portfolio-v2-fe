@@ -12,9 +12,9 @@ export const LoadingComponent = (props: { icons: JSX.Element[] }) => {
           );
         })}
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 animate-pulse origin-center">
         <RiHexagonLine
-          className="animate-spin origin-center"
+          // className="animate-pulse origin-center"
           size={"1rem"}
           color="yellow"
         />

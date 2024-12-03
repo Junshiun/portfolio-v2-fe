@@ -12,7 +12,7 @@ export const ResetButton = (props: {
   return (
     <div
       className={twMerge(
-        "absolute top-4 right-4 cursor-pointer bg-black rounded-full p-2 opacity-0 transition-opacity duration-[2s]",
+        "absolute top-4 right-4 cursor-pointer bg-black rounded-full p-4 opacity-0 transition-opacity duration-[2s]",
         timerContext?.timerCompleted && "!opacity-100",
       )}
       onClick={() => {

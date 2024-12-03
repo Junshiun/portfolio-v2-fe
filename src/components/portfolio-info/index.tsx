@@ -1,12 +1,11 @@
+"use client"
+
+import { useAppConfigContext } from "@/context/app-config";
+
 export const PortfolioInfo = (props: { className: string }) => {
-  const tech = [
-    "Next.js",
-    "Three.js",
-    "React",
-    "AWS",
-    "Serverless",
-    "Tailwind CSS",
-  ];
+  const appConfig = useAppConfigContext();
+
+  const { about } = appConfig;
 
   return (
     <div
@@ -15,7 +14,7 @@ export const PortfolioInfo = (props: { className: string }) => {
       <div className="col-span-2">
         <span className="//text-grey-01">Develop with</span>
         <div className="flex gap-4">
-          {tech.map((tech, index) => {
+          {about?.tech.develop.map((tech, index) => {
             return (
               <div
                 key={`tech-${index}`}
@@ -29,21 +28,45 @@ export const PortfolioInfo = (props: { className: string }) => {
       </div>
       <div>
         <span className="//text-grey-01">Deploy with</span>
-        <div className="text-grey-01 py-2">Amplify</div>
+        {about?.tech.deploy.map((tech, index) => {
+            return (
+              <div
+                key={`deploy-${index}`}
+                className="//div-with-bg-01 py-2 text-grey-01"
+              >
+                {tech}
+              </div>
+            );
+          })}
       </div>
       <div>
         <span className="//text-grey-01">GitHub</span>
         <div className="text-grey-01 py-2 flex gap-4">
-          {["Frontend", "Backend"].map((stack, index) => {
-            return (
-              <div
+          {
+            Object.keys(about?.tech.github || {}).map((repo, index) => {
+              return (
+                <a
                 key={`stack-${index}`}
                 className="//div-with-bg-01 text-grey-01"
+                href={about?.tech.github[repo]}
+                target="_blank"
+              >
+                {repo}
+              </a>
+              )
+            })
+          }
+          {/* {["Frontend", "Backend"].map((stack, index) => {
+            return (
+              <a
+                key={`stack-${index}`}
+                className="//div-with-bg-01 text-grey-01"
+                href={}
               >
                 {stack}
-              </div>
+              </a>
             );
-          })}
+          })} */}
         </div>
       </div>
     </div>

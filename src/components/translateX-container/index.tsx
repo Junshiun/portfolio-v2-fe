@@ -21,6 +21,7 @@ export const TranslateXContainer = (props: {
     >;
   };
   iterableComponent: JSX.Element[] | JSX.Element;
+  className?: string;
 }) => {
   // const [ highlight, setHighlight ] = useState<{
   //     status: boolean,
@@ -34,7 +35,7 @@ export const TranslateXContainer = (props: {
 
   return (
     <motion.div
-      className="w-[200%] h-full grid grid-cols-2 //transition-transform //duration-500 will-change-transform //ease-in-out"
+      className={`w-[200%] h-full grid grid-cols-2 //transition-transform //duration-500 will-change-transform //ease-in-out ${props.className}`}
       animate={{ x: highlightGetter.status ? "-50%" : 0 }}
       transition={{ duration: 0.4 }}
     >

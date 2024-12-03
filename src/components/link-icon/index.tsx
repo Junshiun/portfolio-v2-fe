@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { PropsWithChildren } from "react";
 
 export const LinkIcon = (
@@ -10,13 +9,14 @@ export const LinkIcon = (
   }>,
 ) => {
   return (
-    <Link
+    <a
       href={props.href || ""}
-      scroll={false}
+      target="_blank"
+      // scroll={false}
       title={props.title}
       className={`cursor-pointer ${props.className}`}
     >
       {props.children}
-    </Link>
+    </a>
   );
 };

@@ -6,7 +6,7 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 
 export default function Loading() {
   return (
-    <div className="z-20 fixed inset-0 h-screen w-screen flex flex-col items-center justify-center bg-black gap-4">
+    <div className="z-20 h-screen w-screen flex flex-col items-center justify-center bg-black gap-4">
       <LoadingComponent
         icons={[
           <IoInformation key="icon-loading-1" />,
