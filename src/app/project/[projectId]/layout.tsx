@@ -1,6 +1,5 @@
 import { TProjectProps } from "@/context/app-config/type";
 import Statics from "@/statics";
-import { fetchWithCache } from "@/utils/fetch-cache";
 import { Metadata } from "next";
 import Link from "next/link";
 import { RiHexagonLine } from "react-icons/ri";
