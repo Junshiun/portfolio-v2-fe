@@ -169,9 +169,9 @@ const ProjectPage = () => {
         {targetProject?.demo && (
           <div className="border-t-2 border-t-grey-02 pt-8 grid gap-8">
             <h3 className="text-grey-01">Demo</h3>
-             <div className="h-[60rem] p-8 overflow-hidden div-with-bg-01 rounded-xl">
+             <div className="h-[60rem] min-w-80 p-4 overflow-hidden div-with-bg-01 rounded-xl">
               <iframe
-                className="p-8 overflow-hidden div-with-bg-01 rounded-xl"
+                className="overflow-hidden div-with-bg-01 rounded-xl"
                 src={targetProject.demo.url}
                 seamless
                 width={targetProject.demo.device?.width || "100%"}
