@@ -107,7 +107,7 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
       .easing(Easing.Quadratic.Out) // Easing function for fast start and slow end
       .onStart(() => {
         if (props.orbitControlRef.current) {
-          props.orbitControlRef.current.maxPolarAngle = Math.PI;
+          // props.orbitControlRef.current.maxPolarAngle = Math.PI;
           props.orbitControlRef.current?.reset();
           // camera.position.copy(initialPosition.current);
         }
@@ -117,7 +117,7 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
       })
       .onComplete(() => {
         if (props.orbitControlRef.current) {
-          props.orbitControlRef.current.maxPolarAngle = Math.PI/2;
+          // props.orbitControlRef.current.maxPolarAngle = Math.PI/2;
         }
       })
       .start();
@@ -339,7 +339,7 @@ export const CanvasScreen = () => {
         <OrbitControls
           // enableZoom={false}
           ref={orbitControlRef}
-          maxPolarAngle={Math.PI / 2}
+          // maxPolarAngle={Math.PI / 2}
         ></OrbitControls>
         {/* <OrbitControls></OrbitControls> */}
       </Canvas>
