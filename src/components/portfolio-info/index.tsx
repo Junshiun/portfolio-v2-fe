@@ -9,11 +9,11 @@ export const PortfolioInfo = (props: { className: string }) => {
 
   return (
     <div
-      className={`//border-[0.01rem] opacity-30 hover:!opacity-100 border-solid border-grey-02 //p-4 rounded-xl w-fit text-grey-01 grid grid-cols-2 [&_*]:text-sm ${props.className}`}
+      className={`//border-[0.01rem] opacity-30 hover:!opacity-100 border-solid border-grey-02 //p-4 rounded-xl w-fit text-grey-01 grid grid-cols-2 [&_*]:text-sm gap-4 ${props.className}`}
     >
       <div className="col-span-2">
         <span className="//text-grey-01">Develop with</span>
-        <div className="flex gap-4">
+        <div className="flex gap-[0_1rem] flex-wrap">
           {about?.tech.develop.map((tech, index) => {
             return (
               <div

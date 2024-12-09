@@ -65,10 +65,26 @@ export type TMetaData = {
   desc: string;
 }
 
+export type TCanvasProps = {
+  camera: {
+    initial: {
+      x: number;
+      y: number;
+      z: number;
+    },
+    target: {
+      x: number;
+      y: number;
+      z: number;
+    }
+  }
+}
+
 export type TAppConfigProps = {
   experience?: TExperienceProps[];
   projects?: TProjectProps[];
   skills?: TSkillsProps;
   about?: TAboutProps;
-  metadata?: TMetaData
+  metadata?: TMetaData;
+  canvas?: TCanvasProps;
 };

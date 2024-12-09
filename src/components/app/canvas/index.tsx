@@ -33,6 +33,7 @@ import { FaCube } from "react-icons/fa6";
 import { useTimerContext } from "@/context/timer";
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { MessageGroup } from "./groups/message";
+import { useAppConfigContext } from "@/context/app-config";
 
 extend({ TextGeometry });
 
@@ -57,6 +58,9 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
   },
   ref,
 ) {
+
+  const appConfig = useAppConfigContext();
+
   const { camera } = useThree();
 
   // useEffect(() => {
@@ -123,13 +127,14 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
       .start();
   };
 
-  const target = new Vector3(2, 0, 4);
+  const target = new Vector3(appConfig.canvas?.camera.target.x, appConfig.canvas?.camera.target.y, appConfig.canvas?.camera.target.z);
+  // const target = new Vector3(2, 0, 4);
 
   useEffect(() => {
 
     // initialPosition.current.copy(camera.position);
 
-    animateTween(new Vector3(-5, 8, 6), target, 5000);
+    animateTween(new Vector3(appConfig.canvas?.camera.initial.x, appConfig.canvas?.camera.initial.y, appConfig.canvas?.camera.initial.z), target, 5000);
 
     requestAnimationFrame(animateCamera);
   }, [camera]);
@@ -339,6 +344,7 @@ export const CanvasScreen = () => {
         <OrbitControls
           // enableZoom={false}
           ref={orbitControlRef}
+          // reverseHorizontalOrbit={true}
           // maxPolarAngle={Math.PI / 2}
         ></OrbitControls>
         {/* <OrbitControls></OrbitControls> */}
