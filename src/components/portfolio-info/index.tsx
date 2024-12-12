@@ -12,9 +12,9 @@ export const PortfolioInfo = (props: { className: string }) => {
       className={`//border-[0.01rem] opacity-30 hover:!opacity-100 border-solid border-grey-02 //p-4 rounded-xl w-fit text-grey-01 grid grid-cols-2 [&_*]:text-sm gap-4 ${props.className}`}
     >
       <div className="col-span-2">
-        <span className="//text-grey-01">Develop with</span>
+        <span className="//text-grey-01">{about?.tech.develop.name}</span>
         <div className="flex gap-[0_1rem] flex-wrap">
-          {about?.tech.develop.map((tech, index) => {
+          {about?.tech.develop.stack.map((tech, index) => {
             return (
               <div
                 key={`tech-${index}`}
@@ -27,8 +27,8 @@ export const PortfolioInfo = (props: { className: string }) => {
         </div>
       </div>
       <div>
-        <span className="//text-grey-01">Deploy with</span>
-        {about?.tech.deploy.map((tech, index) => {
+        <span className="//text-grey-01">{about?.tech.deploy.name}</span>
+        {about?.tech.deploy.stack.map((tech, index) => {
             return (
               <div
                 key={`deploy-${index}`}

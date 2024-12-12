@@ -51,8 +51,14 @@ export type TAboutProps = {
     instagram: string;
   };
   tech: {
-    deploy: string[];
-    develop: string[];
+    deploy: {
+      name: string;
+      stack: string[]
+    };
+    develop: {
+      name: string;
+      stack: string[];
+    };
     github: {
       [key: string]: string;
     }
