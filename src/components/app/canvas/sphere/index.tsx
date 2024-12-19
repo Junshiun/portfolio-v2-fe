@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
-import { Bloom, EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
-import { useRef, useEffect, RefObject, useState, useCallback, memo, LegacyRef } from "react";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { useRef, useEffect, RefObject, useCallback, memo } from "react";
 import { Group, Mesh, PointLight } from "three";
 import { FontLoader, TextGeometry } from "three/examples/jsm/Addons.js";
 import fontJson from "three/examples/fonts/helvetiker_regular.typeface.json";
@@ -53,6 +53,7 @@ const Effect = memo(() => {
     </EffectComposer>
   )
 })
+Effect.displayName = "Effect"
 
 export const SymbolSphere = (props: {
   canvasRef: RefObject<HTMLCanvasElement>;

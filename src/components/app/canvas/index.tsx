@@ -1,6 +1,6 @@
 "use client";
 import { OrbitControls } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import {
   useRef,
   useEffect,
@@ -10,8 +10,6 @@ import {
   forwardRef,
   useImperativeHandle,
   memo,
-  useLayoutEffect,
-  Fragment,
 } from "react";
 import { DoubleSide, Vector3 } from "three";
 import {
@@ -37,7 +35,6 @@ import { useTimerContext } from "@/context/timer";
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { MessageGroup } from "./groups/message";
 import { useAppConfigContext } from "@/context/app-config";
-import { SelectiveBloom, EffectComposer } from "@react-three/postprocessing";
 
 extend({ TextGeometry });
 
@@ -377,3 +374,4 @@ export const CanvasScreen = memo(() => {
     </div>
   );
 });
+CanvasScreen.displayName = "Canvas"
