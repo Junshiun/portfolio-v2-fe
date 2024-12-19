@@ -9,6 +9,9 @@ import {
   // useLayoutEffect,
   forwardRef,
   useImperativeHandle,
+  memo,
+  useLayoutEffect,
+  Fragment,
 } from "react";
 import { DoubleSide, Vector3 } from "three";
 import {
@@ -34,6 +37,7 @@ import { useTimerContext } from "@/context/timer";
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { MessageGroup } from "./groups/message";
 import { useAppConfigContext } from "@/context/app-config";
+import { SelectiveBloom, EffectComposer } from "@react-three/postprocessing";
 
 extend({ TextGeometry });
 
@@ -63,6 +67,8 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
 
   const { camera } = useThree();
 
+  const canvasGroupRef = useRef(null);
+
   // useEffect(() => {
   //   if  (gl && scene && camera) {
   //     console.log("loaded");
@@ -87,7 +93,7 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
   // const data = useScroll();
 
   // useEffect(() => {
-  // window.addEventListener("scroll", () => {
+  // document.addEventListener("scroll", () => {
   //   console.log(data);
   // });
   // }, []);
@@ -151,9 +157,9 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
     };
   });
 
-  useFrame(() => {
-    camera.updateProjectionMatrix();
-  });
+  // useFrame(() => {
+  //   camera.updateProjectionMatrix();
+  // });
 
   // const [viewportDimension, setViewportDimension] = useState({
   //   width: 0,
@@ -187,18 +193,19 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
   // }
 
   // useLayoutEffect(() => {
-  //   window.addEventListener("resize", calculateViewport, false);
-  //   // window.addEventListener('scroll', handleScroll);
+  //   document.addEventListener("resize", calculateViewport, false);
+  //   // document.addEventListener('scroll', handleScroll);
 
   //   calculateViewport();
 
-  //   return () => window.removeEventListener("resize", calculateViewport, false);
+  //   return () => document.removeEventListener("resize", calculateViewport, false);
   // }, []);
 
   // const font = new FontLoader().parse(fontJson);
 
   return (
     <>
+    <group ref={canvasGroupRef}>
       {/* <group onClick={() => console.log(camera.position)}>
         <mesh>
         <boxGeometry args={[1,1,1]}></boxGeometry>
@@ -300,11 +307,17 @@ export const CanvasRenderer = forwardRef(function CanvasRenderer(
       >
         <MessageGroup />
       </CanvasGroup>
+      </group>
+      {/* <EffectComposer>
+        {
+          canvasGroupRef.current && <SelectiveBloom selection={canvasGroupRef.current} intensity={0.1}/> || <></>
+        }
+      </EffectComposer> */}
     </>
   );
 });
 
-export const CanvasScreen = () => {
+export const CanvasScreen = memo(() => {
   const [loading, setLoading] = useState(true);
   const orbitControlRef = useRef<OrbitControlsImpl>(null);
 
@@ -333,8 +346,8 @@ export const CanvasScreen = () => {
       <Canvas
         ref={canvasRef}
         camera={{ position: [-5, 8, 6], fov: 75 }}
-        gl={{ preserveDrawingBuffer: true }}
-        shadows
+        // gl={{ preserveDrawingBuffer: true }}
+        // shadows
         onCreated={() => {
           timerContext?.startTimer();
           setLoading(false);
@@ -363,4 +376,4 @@ export const CanvasScreen = () => {
       )}
     </div>
   );
-};
+});

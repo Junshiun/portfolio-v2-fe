@@ -35,11 +35,11 @@ const ProjectPage = () => {
 
   useEffect(() => {
     if (targetProject?.customRoute) {
-      window.addEventListener("beforeunload", customBackButton);
+      document.addEventListener("beforeunload", customBackButton);
     }
 
     return () => {
-      window.removeEventListener("beforeunload", customBackButton);
+      document.removeEventListener("beforeunload", customBackButton);
     };
   }, [targetProject?.customRoute]);
 

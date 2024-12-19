@@ -45,12 +45,6 @@ export const AboutGroup = () => {
               />
             </div>
           </Html>
-          {/* <mesh>
-                        <boxGeometry
-                            args={[0.1, 0.1, 0.01]}
-                        ></boxGeometry>
-                        <meshBasicMaterial map={texture}></meshBasicMaterial>
-                    </mesh> */}
         </mesh>
         <mesh position={[0.25, 0, 0.1]}>
           <textGeometry

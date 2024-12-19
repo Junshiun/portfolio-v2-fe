@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { useRef, useEffect, RefObject, useState, useCallback } from "react";
+import { Bloom, EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
+import { useRef, useEffect, RefObject, useState, useCallback, memo, LegacyRef } from "react";
 import { Group, Mesh, PointLight } from "three";
 import { FontLoader, TextGeometry } from "three/examples/jsm/Addons.js";
 import fontJson from "three/examples/fonts/helvetiker_regular.typeface.json";
@@ -45,6 +45,15 @@ const Text = (props: {
   );
 };
 
+const Effect = memo(() => {
+  return (
+    <EffectComposer>
+      <Bloom intensity={0.1} />
+      {/* <SelectiveBloom intensity={0.1}/> */}
+    </EffectComposer>
+  )
+})
+
 export const SymbolSphere = (props: {
   canvasRef: RefObject<HTMLCanvasElement>;
 }) => {
@@ -53,7 +62,9 @@ export const SymbolSphere = (props: {
   const sphereRef = useRef<Group>(null);
   const boxRef = useRef<Mesh>(null);
   const lightRef = useRef<PointLight>(null);
-  const [floatingAnimation, setFloatingAnimation] = useState(true);
+  const tabActiveRef = useRef<boolean>(true);
+  
+  const floatingAnimationRef = useRef(true);
   // const [pending, startTransition] = useTransition();
   // const [startingPosition, setStartingPosition] = useState(0);
   // const [time, setTime] = useState(0);
@@ -90,30 +101,36 @@ export const SymbolSphere = (props: {
       100;
 
     if (scrollTopVar === 0) {
-      setFloatingAnimation(true);
+      floatingAnimationRef.current = true;
       timeVar = -2;
     } else {
-      setFloatingAnimation(false);
+      floatingAnimationRef.current = false
     }
 
     setPosition();
     // })
   };
 
+  const handleVisibilityChange = () => {
+    tabActiveRef.current = !document.hidden;
+  }
+
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    document.addEventListener("scroll", handleScroll);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // console.log(canvasRef.current?.clientHeight);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  });
+  }, []);
 
   useFrame(
     useCallback(
       (state, delta) => {
-        if (sphereRef && sphereRef.current && floatingAnimation) {
+        if (sphereRef && sphereRef.current && floatingAnimationRef.current && tabActiveRef.current) {
           sphereRef.current.rotation.x += 0.005;
           sphereRef.current.rotation.y += 0.005;
           sphereRef.current.rotation.z -= delta * 3;
@@ -125,7 +142,7 @@ export const SymbolSphere = (props: {
           timeVar += 0.02;
         }
       },
-      [sphereRef, floatingAnimation],
+      [sphereRef, floatingAnimationRef],
     ),
   );
 
@@ -157,7 +174,7 @@ export const SymbolSphere = (props: {
   //     setPosition();
   //   // }
 
-  //   // window.addEventListener("resize", () => {
+  //   // document.addEventListener("resize", () => {
   //   //   setPosition();
   //   // });
 
@@ -264,9 +281,7 @@ export const SymbolSphere = (props: {
         })}
 
         {sphereRef.current && lightRef.current && (
-          <EffectComposer>
-            <Bloom intensity={0.1} />
-          </EffectComposer>
+          <Effect />
         )}
         {/* <SelectiveBloom lights={[lightRef.current]} selection={[sphereRef.current]} intensity={10} /> */}
       </group>
